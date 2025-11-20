@@ -2,8 +2,9 @@
 // SALA-SCRIPT.JS - Interações das páginas de sala
 // ========================================
 
-// Dados detalhados dos projetos (exemplo - você pode expandir)
+// Dados detalhados dos projetos (lista manual completa)
 const projectsData = {
+    // Sala 1º Ano
     1: {
         title: "Energia Solar Sustentável",
         category: "Física",
@@ -21,8 +22,7 @@ const projectsData = {
             
             <p><strong>Materiais Utilizados:</strong> Painéis fotovoltaicos, baterias, inversores 
             de corrente, controladores de carga.</p>
-        `
-        ,
+        `,
         images: [
             { url: 'images/9ano/energia-1.jpg', caption: 'Montagem do painel solar' },
             { url: 'images/9ano/energia-2.jpg', caption: 'Equipe apresentando o protótipo' },
@@ -46,8 +46,7 @@ const projectsData = {
             
             <p><strong>Inovação:</strong> Sistema de aprendizado que permite ao robô melhorar 
             suas ações com o uso contínuo.</p>
-        `
-        ,
+        `,
         images: [
             { url: 'images/9ano/robo-1.jpg', caption: 'Robô em testes de movimentação' },
             { url: 'images/9ano/robo-2.jpg', caption: 'Equipe ajustando sensores' }
@@ -70,14 +69,82 @@ const projectsData = {
             
             <p><strong>Impacto Social:</strong> Sistema pode beneficiar comunidades sem acesso 
             à água potável, com custo de implementação inferior a R$ 50.</p>
-        `
-        ,
+        `,
         images: [
             { url: 'images/9ano/agua-1.jpg', caption: 'Montagem do filtro em camadas' },
             { url: 'images/9ano/agua-2.jpg', caption: 'Resultado do teste de turbidez' }
         ]
-    }
+    },
+
+    // Sala 2º Ano (extrai os grupos listados no HTML)
+    4: { title: "Câmara Escura", category: "Feira do Conhecimento 1º ano A", team: ["Manuella O.", "João Gustavo", "Lavínia", "Emanuelly"], pitch: "Sala 11", fullDescription: "", images: [] },
+    5: { title: "Óptica", category: "Feira do Conhecimento 1º ano A", team: ["Annelise", "Lucas Rosa"], pitch: "Sala 11", fullDescription: "", images: [] },
+    6: { title: "DNA", category: "Feira do Conhecimento 1º ano A", team: ["Anna Lívia", "Brenda Ferreira", "Heloa", "João Lucas Almeida", "Maria Rafaela", "Yasmin Pinesso"], pitch: "Sala 11", fullDescription: "", images: [] },
+    7: { title: "Estrelas", category: "Feira do Conhecimento 1º ano A", team: ["Luiz Felipe Xavier", "Cássio", "Guilherme", "Pedro Varela"], pitch: "Sala 11", fullDescription: "", images: [] },
+    8: { title: "Resina Bactericida", category: "Feira do Conhecimento 1º ano A", team: ["Gabriel Fernandes", "Gabriel Manfredine", "Kauã Cruz", "Lucas Martins"], pitch: "Sala 11", fullDescription: "", images: [] },
+    9: { title: "Levitação Clássica", category: "Feira do Conhecimento 1º ano A", team: ["Manuella anunciato", "Victoria de Souza", "Breno Douglas", "Matheus"], pitch: "Sala 11", fullDescription: "", images: [] },
+    10: { title: "Tratamento de Água e Esgoto", category: "Feira do Conhecimento 1º ano A", team: ["Gabriella Dantas", "Isabella Lima", "Gabriel Moraes", "Miguel Santos", "Gustavo Bulhões"], pitch: "Sala 11", fullDescription: "", images: [] },
+    11: { title: "Pilhas", category: "Feira do Conhecimento 1º ano A", team: ["Leonardo Ribeiro", "Luiz Henrique", "Higor", "Gabriel", "Gustavo Bulhões"], pitch: "Sala 11", fullDescription: "", images: [] },
+    12: { title: "Pilhas e Baterias", category: "Feira do Conhecimento 1º ano A", team: ["Kaue", "Kaiky", "Lavinia", "João Paiva", "Gustavo Martins", "Miguel"], pitch: "Sala 11", fullDescription: "", images: [] },
+    13: { title: "", category: "Feira do Conhecimento 1º ano B", team: ["Maria Eduarda", "Victor Hugo", "Adrielly"], pitch: "Sala 12", fullDescription: "", images: [] },
+    14: { title: "Foguete", category: "Feira do Conhecimento 1º ano B", team: ["Augusto", "Júlia Nojosa", "Leonardo Yano", "Leonardo Justo", "Matheus Fabiano"], pitch: "Sala 12", fullDescription: "", images: [] },
+    15: { title: "Vulcão", category: "Feira do Conhecimento 1º ano B", team: ["Bryan", "Enzo", "João Pedro Dário", "João Pedro Félix", "Ricardo"], pitch: "Sala 12", fullDescription: "", images: [] },
+    16: { title: "Atmosfera", category: "Feira do Conhecimento 1º ano B", team: ["Ana Clara", "Clara Vieira", "Giovanna Ramos", "Rafaela Teles"], pitch: "Sala 12", fullDescription: "", images: [] },
+    17: { title: "Sistema Circulatório", category: "Feira do Conhecimento 1º ano C", team: ["Ana Clara Frota", "Julianne", "Manuella Saquetti"], pitch: "Sala 12", fullDescription: "", images: [] },
+
+    // Sala 3º Ano
+    18: { title: "Eletrostática", category: "Feira do Conhecimento 3º ano A", team: ["Richard", "Henrique", "João Gabriel"], pitch: "Sala 17", fullDescription: "", images: [] },
+    19: { title: "Bioplástico", category: "Feira do Conhecimento 3º ano A", team: ["Attilio", "Ana Fernanda", "Letícia", "Tiago"], pitch: "Sala 17", fullDescription: "", images: [] },
+    20: { title: "Bioplástico", category: "Feira do Conhecimento 3º ano A", team: ["Attilio", "Ana Fernanda", "Letícia", "Tiago"], pitch: "Sala 17", fullDescription: "", images: [] },
+    21: { title: "Eletrólise", category: "Feira do Conhecimento 3º ano A", team: ["Amanda", "Ana Julia", "Giovana", "Giovana Ayumi"], pitch: "Sala 17", fullDescription: "", images: [] },
+    22: { title: "", category: "Feira do Conhecimento 3º ano A", team: ["Gustavo", "Gabriely", "Eduardo", "Giovana Ayumi"], pitch: "Sala 17", fullDescription: "", images: [] },
+    23: { title: "Biocombustível", category: "Feira do Conhecimento 3º ano A", team: ["João Pedro Brandi", "Rafael Marcos Fróis de Oliveira", "Maria Clara Caputo Matiotti"], pitch: "Sala 17", fullDescription: "", images: [] },
+    24: { title: "", category: "Feira do Conhecimento 3º ano A", team: ["Milena", "Júlia", "Ruan", "Elis"], pitch: "Sala 17", fullDescription: "", images: [] },
+    25: { title: "Balão de Fermentação", category: "Feira do Conhecimento 3º ano B", team: ["Giovana Araújo", "Larissa Lima", "Maria Eduarda", "Matheus Henrique", "Vinícius Matos"], pitch: "Sala 15", fullDescription: "", images: [] },
+    26: { title: "Bioplástico", category: "Feira do Conhecimento 3º ano B", team: ["Guilherme Gabriel", "Luiz Guilherme", "Vinícius Thomas", "Raul Bicudo"], pitch: "Sala 15", fullDescription: "", images: [] },
+    27: { title: "", category: "Feira do Conhecimento 3º ano B", team: ["Anna Clara", "Ana Luiza", "Ana Júlia", "Luiza Pereira", "Maria Clara", "Mathues Caramuru"], pitch: "Sala 15", fullDescription: "", images: [] },
+    28: { title: "", category: "Feira do Conhecimento 3º ano B", team: ["Gabriella", "Isabelly Fofano", "Lavínia", "Lívia", "Yasmin", "Elis Fidêncio"], pitch: "Sala 15", fullDescription: "", images: [] },
+    29: { title: "", category: "Feira do Conhecimento 3º ano B", team: ["João Vitor", "Kauã Guimarães", "Leonardo Tavares", "Matheus Almeida", "Raí Guilherme"], pitch: "Sala 15", fullDescription: "", images: [] },
+    30: { title: "Desenvolvimento do site!", category: "Feira do Conhecimento 3º ano B", team: ["Arthur Filipe dos Santos Pereira", "Gabriel Prudente Magalhães", "Guilheme Aparecido Nascimento", "Júlio Cesar Carneiro Filho", "Rafael Oliveira e Silva"], pitch: "Você está vendo agora!", fullDescription: "Desenvolvimento de um site para apresentar os projetos da Feira de Ciências do SESI Jacareí.", images: [] },
+
+    // Sala 9º Ano
+    31: { title: "Reações Químicas", category: "Feira do Conhecimento 9º ano A", team: ["Larissa", "Mariana Elisa"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    32: { title: "Bola de Plasma", category: "Feira do Conhecimento 9º ano A", team: ["Mariana Vitória", "Gabriel Godoy", "Kemelyn", "Maria Luiza", "Sara Liz"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    33: { title: "", category: "Feira do Conhecimento 9º ano", team: ["Helena", "Ana Laura", "Paulo"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    34: { title: "Drone", category: "Feira do Conhecimento 9º ano A", team: ["Thiago Pietro", "Carlos Luiz", "Igor", "Phelipe"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    35: { title: "", category: "Feira do Conhecimento 9º ano", team: ["Vinícius", "Gustavo", "Arthur"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    36: { title: "", category: "Feira do Conhecimento 9º ano", team: ["Júlia", "Thamires"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    37: { title: "Garra Mecânica", category: "Feira do Conhecimento 9º ano", team: ["Alice", "Anna Júlia", "Eduarda", "Gabriel Lisboa", "Gabriel Leite", "Henrique", "Pedro Henrique", "Thaniara"], pitch: "Laboratório de Química ou Física", fullDescription: "", images: [] },
+    38: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Vitor Rodrigues", "Cauã Miguel", "Pedro Miguel", "Analu Pires", "Ana Clara Idalgo", "Lucas Abdala"], pitch: "Sala 19", fullDescription: "", images: [] },
+    39: { title: "Sistema de Ligação", category: "Feira do Conhecimento 9º ano C", team: ["Romulo", "Luiz Miguel Joia", "João Victor", "Rafael", "Calebe", "Saymon Ferreira"], pitch: "Sala 19", fullDescription: "", images: [] },
+    40: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Yasmin", "Maria Cecília", "Helena de Paula", "Miguel Rangel"], pitch: "Sala 19", fullDescription: "", images: [] },
+    41: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Gabriel Frota", "Isabela", "Allana", "Giovana Bomsucesso", "Amanda Moraes", "Felipe Thomaz"], pitch: "Sala 19", fullDescription: "", images: [] },
+    42: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Gustavo", "Sara Machado", "Beatriz", "Anna Julia"], pitch: "Sala 19", fullDescription: "", images: [] },
+    43: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Maria Alice", "Davi Macenas", "Carlos", "Gyulia"], pitch: "Sala 19", fullDescription: "", images: [] }
 };
+
+// Garantir pelo menos 4 imagens por projeto usando placeholders
+Object.keys(projectsData).forEach(key => {
+    const p = projectsData[key];
+    if (!p.images) p.images = [];
+    for (let i = 1; i <= 4; i++) {
+        if (!p.images[i - 1]) {
+            p.images[i - 1] = {
+                url: `images/projects/p${key}-${i}.svg`,
+                caption: (p.title ? `${p.title} - Imagem ${i}` : `Projeto ${key} - Imagem ${i}`)
+            };
+        }
+    }
+});
+
+// Garantir que cada projeto tenha ao menos uma imagem (placeholder) quando vazio.
+Object.keys(projectsData).forEach(key => {
+    const proj = projectsData[key];
+    if (!proj) return;
+    if (!Array.isArray(proj.images) || proj.images.length === 0) {
+        proj.images = [{ url: `images/projects/project-${key}.svg`, caption: proj.title || 'Imagem do projeto' }];
+    }
+});
 
 // Menu mobile toggle
 const menuToggle = document.getElementById('menu-toggle');
