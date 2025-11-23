@@ -123,15 +123,35 @@ const projectsData = {
     43: { title: "", category: "Feira do Conhecimento 9º ano C", team: ["Maria Alice", "Davi Macenas", "Carlos", "Gyulia"], pitch: "Sala 19", fullDescription: "", images: [] }
 };
 
+// Função para verificar se uma imagem existe (tentando múltiplos formatos)
+async function checkImageExists(baseUrl) {
+    const formats = ['.jpg', '.jpeg', '.png', '.svg', '.webp'];
+    const urlWithoutExt = baseUrl.replace(/\.[^/.]+$/, '');
+    
+    for (const format of formats) {
+        try {
+            const response = await fetch(urlWithoutExt + format, { method: 'HEAD' });
+            if (response.ok) {
+                return urlWithoutExt + format;
+            }
+        } catch (e) {
+            continue;
+        }
+    }
+    return null;
+}
+
 // Garantir pelo menos 4 imagens por projeto usando placeholders
 Object.keys(projectsData).forEach(key => {
     const p = projectsData[key];
     if (!p.images) p.images = [];
     for (let i = 1; i <= 4; i++) {
         if (!p.images[i - 1]) {
+            // Tenta JPG primeiro, depois SVG como fallback
             p.images[i - 1] = {
-                url: `images/projects/p${key}-${i}.svg`,
-                caption: (p.title ? `${p.title} - Imagem ${i}` : `Projeto ${key} - Imagem ${i}`)
+                url: `images/projects/p${key}-${i}.jpg`,
+                caption: (p.title ? `${p.title} - Imagem ${i}` : `Projeto ${key} - Imagem ${i}`),
+                fallback: `images/projects/p${key}-${i}.svg`
             };
         }
     }
@@ -142,9 +162,25 @@ Object.keys(projectsData).forEach(key => {
     const proj = projectsData[key];
     if (!proj) return;
     if (!Array.isArray(proj.images) || proj.images.length === 0) {
-        proj.images = [{ url: `images/projects/project-${key}.svg`, caption: proj.title || 'Imagem do projeto' }];
+        // Tenta JPG primeiro, SVG como fallback
+        proj.images = [{ 
+            url: `images/projects/project-${key}.jpg`, 
+            caption: proj.title || 'Imagem do projeto',
+            fallback: `images/projects/project-${key}.svg`
+        }];
     }
 });
+
+// Função para lidar com erro de carregamento de imagem e tentar fallback
+function handleImageError(imgElement) {
+    const fallbackUrl = imgElement.getAttribute('data-fallback');
+    if (fallbackUrl && imgElement.src !== fallbackUrl) {
+        imgElement.src = fallbackUrl;
+    } else {
+        // Placeholder genérico se tudo falhar
+        imgElement.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23e0e0e0"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="18" fill="%23999" text-anchor="middle" dy=".3em"%3EImagem não disponível%3C/text%3E%3C/svg%3E';
+    }
+}
 
 // Menu mobile toggle
 const menuToggle = document.getElementById('menu-toggle');
@@ -165,94 +201,78 @@ const modalClose = document.getElementById('modal-close');
 const modalTitle = document.getElementById('modal-title');
 const modalBody = document.getElementById('modal-body');
 
-// Abrir modal — handler robusto que localiza o elemento com data-project
-document.addEventListener('click', (e) => {
-    // Só prosseguir se o clique foi em (ou dentro) de um botão/elemento relacionado a um projeto
-    const clickedBtn = e.target.closest('.project-card__btn') || e.target.closest('[data-project]') || e.target.closest('.project-card');
-    if (!clickedBtn) return;
-
-    // Tentar ler diretamente o atributo data-project do elemento mais relevante
-    let projectId = clickedBtn.getAttribute ? clickedBtn.getAttribute('data-project') : null;
-
-    // Se o elemento encontrado for o .project-card e não tiver data-project, procurar um botão dentro
-    if (!projectId && clickedBtn.classList && clickedBtn.classList.contains('project-card')) {
-        const innerBtn = clickedBtn.querySelector('[data-project]');
-        if (innerBtn) projectId = innerBtn.getAttribute('data-project');
-    }
-
-    // Último recurso: tentar mapear pelo título do cartão (caso os data-project estejam faltando)
-    if (!projectId) {
-        const card = clickedBtn.closest('.project-card') || clickedBtn;
-        const titleEl = card ? card.querySelector('.project-card__title') : null;
-        if (titleEl) {
-            const titleText = titleEl.textContent.trim().toLowerCase();
-            for (const id in projectsData) {
-                const p = projectsData[id];
-                if (p && p.title && p.title.toLowerCase().includes(titleText) && titleText.length > 0) {
-                    projectId = id;
-                    break;
-                }
+// Abrir modal
+document.querySelectorAll('.project-card__btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const projectId = e.target.getAttribute('data-project');
+        const project = projectsData[projectId];
+        
+        if (project) {
+            modalTitle.textContent = project.title;
+            // Montar galeria (se houver imagens) e conteúdo
+            let galleryHTML = '';
+            if (project.images && project.images.length > 0) {
+                const firstImg = project.images[0];
+                galleryHTML = `
+                    <div class="modal__gallery" id="modal-gallery">
+                        <div class="modal__gallery-main">
+                            <button class="modal__gallery-btn modal__gallery-btn--prev" aria-label="Imagem anterior">‹</button>
+                            <img src="${firstImg.url}" 
+                                 alt="${firstImg.caption}" 
+                                 class="modal__gallery-img" 
+                                 id="modal-gallery-main-img" 
+                                 loading="lazy"
+                                 data-fallback="${firstImg.fallback || ''}"
+                                 onerror="handleImageError(this)">
+                            <button class="modal__gallery-btn modal__gallery-btn--next" aria-label="Próxima imagem">›</button>
+                        </div>
+                        <div class="modal__gallery-thumbs" id="modal-gallery-thumbs">
+                            ${project.images.map((img, i) => `
+                                <button class="modal__gallery-thumb" data-index="${i}" aria-label="Ver imagem ${i+1}">
+                                    <img src="${img.url}" 
+                                         alt="${img.caption}" 
+                                         loading="lazy"
+                                         data-fallback="${img.fallback || ''}"
+                                         onerror="handleImageError(this)">
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
             }
+
+            modalBody.innerHTML = `
+                <div class="modal__content-grid">
+                    ${galleryHTML}
+                    <div class="modal__info">
+                        <p class="modal__category"><strong>Categoria:</strong> ${project.category}</p>
+                        <div class="modal__team">
+                            <p><strong>Integrantes:</strong></p>
+                            <ul>
+                                ${project.team.map(member => `<li>${member}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <p class="modal__pitch"><strong>📍 Local do Pitch:</strong> ${project.pitch}</p>
+                    </div>
+                    <div class="modal__description">
+                        ${project.fullDescription}
+                    </div>
+                </div>
+            `;
+
+            // Inicializar comportamento da galeria
+            if (project.images && project.images.length > 0) {
+                initModalGallery(project.images);
+            }
+            
+            modal.removeAttribute('hidden');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Foco no botão de fechar para acessibilidade
+            modalClose.focus();
         }
-    }
-
-    if (!projectId) return; // nada a fazer se não determinarmos um id
-
-    const project = projectsData[projectId];
-    if (!project) return;
-
-    modalTitle.textContent = project.title;
-    // Montar galeria (se houver imagens) e conteúdo
-    let galleryHTML = '';
-    if (project.images && project.images.length > 0) {
-        galleryHTML = `
-            <div class="modal__gallery" id="modal-gallery">
-                <div class="modal__gallery-main">
-                    <button class="modal__gallery-btn modal__gallery-btn--prev" aria-label="Imagem anterior">‹</button>
-                    <img src="${project.images[0].url}" alt="${project.images[0].caption}" class="modal__gallery-img" id="modal-gallery-main-img" loading="lazy">
-                    <button class="modal__gallery-btn modal__gallery-btn--next" aria-label="Próxima imagem">›</button>
-                </div>
-                <div class="modal__gallery-thumbs" id="modal-gallery-thumbs">
-                    ${project.images.map((img, i) => `
-                        <button class="modal__gallery-thumb" data-index="${i}" aria-label="Ver imagem ${i+1}">
-                            <img src="${img.url}" alt="${img.caption}" loading="lazy">
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    modalBody.innerHTML = `
-        <div class="modal__content-grid">
-            ${galleryHTML}
-            <div class="modal__info">
-                <p class="modal__category"><strong>Categoria:</strong> ${project.category}</p>
-                <div class="modal__team">
-                    <p><strong>Integrantes:</strong></p>
-                    <ul>
-                        ${project.team.map(member => `<li>${member}</li>`).join('')}
-                    </ul>
-                </div>
-                <p class="modal__pitch"><strong>📍 Local do Pitch:</strong> ${project.pitch}</p>
-            </div>
-            <div class="modal__description">
-                ${project.fullDescription}
-            </div>
-        </div>
-    `;
-
-    // Inicializar comportamento da galeria
-    if (project.images && project.images.length > 0) {
-        initModalGallery(project.images);
-    }
-
-    modal.removeAttribute('hidden');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Foco no botão de fechar para acessibilidade
-    if (modalClose) modalClose.focus();
+    });
 });
 
 // Fechar modal
@@ -292,6 +312,9 @@ function initModalGallery(images) {
         currentIndex = index;
         mainImg.src = images[currentIndex].url;
         mainImg.alt = images[currentIndex].caption;
+        if (images[currentIndex].fallback) {
+            mainImg.setAttribute('data-fallback', images[currentIndex].fallback);
+        }
 
         // Atualizar destaque nas miniaturas
         thumbsContainer.querySelectorAll('.modal__gallery-thumb').forEach((btn, i) => {
